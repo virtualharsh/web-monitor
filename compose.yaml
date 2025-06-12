@@ -1,0 +1,28 @@
+services:
+    server:
+        build: ./server
+        ports:
+            - "5000:5000"
+        volumes:
+            - ./server:/app
+            - /app/node_modules
+        env_file:
+            - ./server/.env.docker
+        networks:
+            - app-network
+        
+    client:
+        build: ./client
+        ports:
+            - "5173:5173"
+        volumes:
+            - ./client:/app
+            - /app/node_modules
+        depends_on:
+            - server
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
